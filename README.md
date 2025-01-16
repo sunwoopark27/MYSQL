@@ -2,7 +2,7 @@
 
 MYSQL WORKBENCH
 
-윗 줄
+윗 줄<br>
 파일 아이콘 : SQL 파일 불러오기
 디스크 모양: 저장 
 번개 모양 : 전체 실행 (Ctrl+ Shift+Enter)
