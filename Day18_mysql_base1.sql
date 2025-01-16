@@ -228,3 +228,8 @@ FROM sales_outlet;
 SELECT
 	COALESCE(NULLIF(gender,'N'), first_name, 'No data')
 FROM customer;
+
+SELECT
+    COALESCE (first_name, 'No Data')
+FROM customer
+WHERE gender = 'N' OR gender IS NULL;
