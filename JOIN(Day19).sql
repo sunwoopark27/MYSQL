@@ -96,10 +96,10 @@ FROM member m
 RIGHT JOIN buy b
 	ON m.mem_id = b.mem_id;
 
-# 3. 구매 이력이 가장 높은 회원 정보 조회(아이디/이름/연락처)
+# 3. 구매 이력이 가장 높은 회원 정보 조회(아이디/이름/구매 리스트) 
 SELECT
 	m.mem_id,m.mem_name,
-	concat(m.phone1,m.phone2) as '연락처'
+	GROUP_CONCAT(b.prod_name) as 'order_list'
 FROM member m
 RIGHT JOIN buy b
 	ON m.mem_id = b.mem_id
