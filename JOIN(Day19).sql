@@ -146,3 +146,20 @@ INNER JOIN emp_table b
 	ON a.manager = b.emp
 WHERE
 	a.manager = '대표';     -- 부하를 뽑아야 하니까 a(부하)기준의 manager
+ 
+# 	            대표
+#                    |
+#      +-------------+-------------+
+#     영업이사       관리이사         정보이사
+#      |           /   \         /    \
+#     영업과장   경리부장  인사부장  개발팀장  개발주임
+
+#  SELF JOIN 결과 
+#   +------- a테이블-------+
+#   emp      name      manager 
+#  영업이사    손승락       대표        대표이름
+#                       emp         name
+#                       +----b테이블---+
+
+# = > 그러므로 a.manager = b.emp이다.
+# 	  a. name = 직원 이름 / b. name = 상사이름이다.
