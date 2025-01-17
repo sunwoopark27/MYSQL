@@ -6,7 +6,8 @@
 #   - RIGHT JOIN : 두가지 중 오른쪽에 맞춰서 
 #   - LEFT JOIN : 두가지 중 왼쪽에 맞춰서 LEFT를 기준으로 없는 아이들은 NULL로 들어감
 #	- SELF (INNER) JOIN : 동일한 것을 가져와서 조인 RIGHT 기준으로 없는 아이들은 NULL로 들어감
-#   - CROSS JOIN
+#   - CROSS JOIN : 두 테이블의 모든 데이터를 추가하여 반환 (행의 갯수 = 각 행의 갯구를 곱한 개수)
+#                  ON 키워드 사용 불가 (랜덤으로 조인)
 
 # (정규화 - 불필요한 아이들이 같은 테이블에 있지 않고 나눠 놓아서 정리한 것)
 # 그렇기 때문에 한꺼번에 보고 싶을 때, 조회할 때 사용한다.
@@ -36,10 +37,10 @@ use market;
 # <문법>
 #SELECT
 #	select_list
-#FROM # 메인 테이블 지정 
+#FROM                               --FROM 절: 메인 테이블 지정 
 #	table_main 
-#INNER JOIN table_join #조인할 테이블 지정
-# ON table_main.fk = table_join.pk; #어떤 테이블의 컬럼들이 동일하게 맞는건지
+#INNER JOIN table_join              -- INNER JOIN: 조인할 테이블 지정
+# ON table_main.fk = table_join.pk; -- ON :어떤 테이블의 컬럼들이 동일하게 맞는건지
 
 # 1. 주문테이블에서 GRL이라는 아이디를 가진 사람의
 #    구매정보와 고객정보 통합 조회
@@ -106,4 +107,42 @@ GROUP BY mem_id
 ORDER BY COUNT(b.prod_name) DESC
 LIMIT 1;
 
+## CROSS JOIN
+# <문법>
+#SELECT
+#	select_list
+#FROM table_a
+#CROSS JOIN table_b;
 
+SELECT *
+FROM member
+CROSS JOIN buy; -- 120
+
+SELECT COUNT(*) FROM member; -- 10
+SELECT COUNT(*) FROM buy;    -- 12
+
+## SELF JOIN 
+#SELECT
+#	select_list
+#FROM                           --FROM절 : 본 테이블 지정
+#	table_a A
+#[INNER] JOIN table_a B         --JOIN절 : 본테이블 지정(반드시 별칭 지정)
+#	ON A.col_name = B.col_name; --ON 키워드 : 조인 조건 작성
+
+# emp_table에서 직속상관와 직원관계 조회
+SELECT
+	a.name AS '직원',
+    b.name AS '상사'
+FROM emp_table a
+INNER JOIN emp_table b
+	ON a.manager = b.emp;
+
+# 대표의 직속 부하는 누구인지 조회 (직급과 이름 출력)
+SELECT
+	a.emp AS '직급',
+    a.name AS '이름'
+FROM emp_table a
+INNER JOIN emp_table b
+	ON a.manager = b.emp
+WHERE
+	a.manager = '대표';     -- 부하를 뽑아야 하니까 a(부하)기준의 manager
