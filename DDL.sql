@@ -62,9 +62,17 @@ ADD CONSTRAINT FOREIGN KEY (store_id) REFERENCES store(store_id);
 # - DROP TABLE table_name;
 # - DROP DATABASE database_name;
 # - DROP DATABASE IF EXISTS database_name;
-# foriegn key 가 존재한다면 먼저 삭제 후 테이블 삭제 가능
-# ALTER TABLE table_name
-# DROP FOREIGN KEY fk_constraint_name;
+
+# ** foriegn key 가 존재한다면 먼저 삭제 후 테이블 삭제 가능
+# 		ALTER TABLE table_name
+# 		DROP FOREIGN KEY fk_constraint_name;
+
+# ** CONTSTRAINT 이름 찾기
+# SELECT CONSTRAINT_NAME
+# FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+# WHERE TABLE_NAME = 'table_name' AND TABLE_SCHEMA = 'database_name';
+
+
 
 # 1. new_examples 테이블 삭제
 DROP TABLE new_examples;
@@ -79,4 +87,3 @@ DROP TABLE new_examples;
 # - 테이블 목록 확인
 #   : SHOW TABLES;
 #   : SHOW FROM db_name;
-
