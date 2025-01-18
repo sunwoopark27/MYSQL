@@ -19,13 +19,13 @@ CREATE TABLE examples (
 # <문법>
 # ALTER TABLE table_name(고정)
 # - 칼럼 추가
-# ADD[COLUMN] col_name col difinition;
+# ADD COLUMN col_name 컬럼 정의(create 할 때 처럼);
 # - 칼럼명 변경
 # RENAME COLUMN con_name TO new_col_name;
 # - 테이블명 변경
 # RENAME TO new_table_name;
 # - 칼럼 삭제
-# DROP [COLUMN] col_name;
+# DROP COLUMN col_name;
 # - 제약조건 추가
 # ADD CONSTRAINT constraint_name constraints;
 # 1. examples 테이블에 Country 필드 추가 (varchar(100) NOT NULL)
