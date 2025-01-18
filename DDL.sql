@@ -1,4 +1,4 @@
-# 데이터 베이스 DDL 
+# 데이터 베이스 DDL (DATA DEFINITION LANGUAGE)
 # - CREATE TABLE : 테이블 생성
 # - ALTER TABLE  : 테이블 수정
 # - DROP TABLE or DATABASE : 테이블 이나 데이터베이스 삭제
