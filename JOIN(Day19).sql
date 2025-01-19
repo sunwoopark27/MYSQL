@@ -79,16 +79,6 @@ LEFT JOIN buy b
 	ON m.mem_id = b.mem_id
 ORDER BY b.prod_name; #NULL값부터 출력
 
-# 구매목록 합쳐서 조회 하는 법 (GROUP_CONCAT)
-SELECT 
-    m.mem_id, m.mem_name, GROUP_CONCAT(b.prod_name) AS order_list
-FROM member m
-RIGHT JOIN buy b
- ON m.mem_id = b.mem_id
-GROUP BY m.mem_id
-ORDER BY COUNT(b.prod_name) DESC
-LIMIT 1;
-
 # 2. 구매이력이 없는 회원명과 전화번호 조회
 SELECT
 	m.mem_name,
@@ -106,7 +96,8 @@ FROM member m
 RIGHT JOIN buy b
 	ON m.mem_id = b.mem_id;
 
-# 3. 구매 이력이 가장 높은 회원 정보 조회(아이디/이름/구매 리스트) 
+# 3. 구매 이력이 가장 높은 회원 정보 조회(아이디/이름/구매 리스트)
+# 구매목록 합쳐서 조회 하는 법 (GROUP_CONCAT)
 SELECT
 	m.mem_id,m.mem_name,
 	GROUP_CONCAT(b.prod_name) as 'order_list'
