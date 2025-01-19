@@ -115,6 +115,7 @@ LIMIT 1;
 #FROM table_a
 #CROSS JOIN table_b;
 
+# 행의 수 카운트
 SELECT *
 FROM member
 CROSS JOIN buy; -- 120
