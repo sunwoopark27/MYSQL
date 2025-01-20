@@ -73,5 +73,59 @@ REVOKE INSERT,UPDATE ON *.* FROM 'sunwoo'@'localhost';
 # DROP USER 'username'@'host';
 DROP USER 'sunwoo'@'localhost';
 
+### Transaction(트랜젝션)
+# 데이터베이스의 상태를 변경시키는 하나의 논리적 작업 단위
+# MySQL에서 트랜잭션은 데이터의 일관성을 보장하고 안전하게 데이터를 처리하기 위해 사용됨
+
+# 1.COMMIT
+#  트랜잭션 내의 모든 작업을 최종반영
+#  트랜젝션이 완료되고, 변경사항 확인
+
+# < 문법 >
+# START TRANSACTION;
+# SQL Query
+# COMMIT;
+
+# 2.ROLLBACK
+# 트랜잭션 내의 모든 작업을 취소
+# 트랜잭션이 시작된 시점으로 되돌아 감
+# COMMIT이 실행된 이후 ROLLBACK 불가
+
+# < 문법 >
+# ROLLBACK;
+
+# 3.SAVEPOINT
+#  트랜잭션 내에서 중간 지점을 설정하여, 트랜잭션을 부분적으로 롤백할 수 있게 함
+# < 문법 >
+# START TRANSACTION;
+# SQL Query
+# SAVEPOINT savepoint_name;
+# ROLLBACK TO save_point_name;
+# COMMIT;
+
+-- 실습 --
+# 한 줄 씩!
+use coffee;
+START TRANSACTION;
+# 첫 번째 작업
+INSERT INTO sales_outlet
+    (sales_outlet_id, sales_outlet_type)
+VALUES (100, 'test'),
+       (200, 'test');
+ROLLBACK; #하면 이 이전에 인서트한 값도 저장 안됨!
+# SAVEPOINT 설정
+SAVEPOINT sp1;
+# 두 번째 작업
+UPDATE sales_outlet SET manager = 50 WHERE sales_outlet_id = 100;
+# 세 번째 작업
+UPDATE sales_outlet SET manager = 20 WHERE sales_outlet_id = 200;
+# 첫 번째 작업으로 롤백
+ROLLBACK TO SAVEPOINT sp1;
+# 트랜잭션을 COMMIT
+COMMIT;
+# => save point 때문에 첫번 째 작업만 반영된다.
+
+
+
 
 
