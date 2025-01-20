@@ -7,13 +7,13 @@
 # - 함수 : 특정 입력에 대해 계산하여 결과를 반환하는 함수
 
 # -- INDEX (ex. 목차, 이진트리)---------------------------------
-#   : 데이터베이스에서 데이터를 보다 빠르게 찾기 위해 사용되는 자료구조(주소정보 가지고 있음)
+#   : 주소정보 가지고 있어서 데이터 베이스에서 조회 빠르다
 #  - 장점
 #  조회하는 속도가 전반적으로 빠름
 #  시스템의 부하가 적음
 #  - 단점
-#  인덱스 정보를 추가로 저장하기 위한 저장공간이 필요
-#  삽입, 수정, 삭제가 빈번한 테이블인 경우 성능이 오히려 떨어짐(인덱스 재생성)
+#  인덱스 별로 메모리가 필요
+#  그래서 삽입, 수정, 삭제가 빈번한 테이블인 경우 성능이 오히려 떨어짐(인덱스 재생성)
 
 # 인덱스의 종류
 -- 기본 인덱스
@@ -44,15 +44,16 @@
 
 #2. INDEX 생성
 # < 문법 >
--- CREATE [UNIQUE] INDEX 구문 활용
+-- 1) CREATE [UNIQUE] INDEX 구문 활용
 # CREATE INDEX index_name
 # ON table_name (col1 [index_type ASC|DESC], col2,...);
--- ALTER TABLE 구문
+-- 2) ALTER TABLE 구문
 # ALTER TABLE table_name
 # ADD INDEX index_name (col1 [index_type ASC|DESC], col2,...);
 
+# primary, foriegn, unique key에 대해서는 자동으로 인덱스 설정된다.
 # UNIQUE 옵션 : 고유한 인덱스를 만들 때 사용
-# index_type : 생략가능하며, 기본값인 B-Tree 사용
+# index_type : 생략가능하며, *** 기본값인 B-Tree 사용 (바이너리트리)
 # ASC, DESC : 정렬방식 지정, 기본값은 ASC
 
 -- 실습
@@ -71,9 +72,9 @@ ON city(Name DESC);
 
 ## 3. INDEX 삭제 ##
 # < 문법 >
-# --  DROP 구문 활용
+# -- 1) DROP 구문 활용
 # DROP INDEX index_name ON table_name
-# -- ALTER 구문 활용
+# -- 2) ALTER 구문 활용
 # ALTER TABLE table_name
 # DROP INDEX index_name
 
