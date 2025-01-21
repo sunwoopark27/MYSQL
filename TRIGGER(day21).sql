@@ -32,3 +32,80 @@
 # Trigger 삭제
 # <  문법 >
 -- DROP TRIGGER IF EXISTS backup_staff_update;
+
+use coffee;
+# < IN workbench>
+# 왼족 스키마들에 테이블에 마우스 대면 세가지 모양중 랜치 모양을 눌러 생성된 창의 맨 밑에
+# Trigger 눌러서 직접 +, - 로 추가 하고 삭제할 수 있다.
+
+# staff 백업테이블 생성
+CREATE TABLE backup_staff(
+	staff_id INT NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    position VARCHAR(50) NOT NULL,
+    start_date DATE NOT NULL,
+    location VARCHAR(50) NOT NULL,
+    mod_type CHAR(6) NOT NULL, -- 수정타입
+    mod_date DATETIME NOT NULL,
+    mod_user VARCHAR(50) NOT NULL
+    );
+
+# UPDATE 에 대한 after trigger 생성
+DELIMITER $$
+CREATE TRIGGER update_backup_staff
+	AFTER UPDATE -- after update다
+    ON staff -- staff에 적용 
+    FOR EACH ROW -- 모든 row에 대해
+BEGIN
+	INSERT INTO backup_staff VALUES( -- 위의 테이블에 넣을게
+		 OLD.staff_id,
+         OLD.first_name,
+         OLD.last_name,
+         OLD.position,
+         OLD.start_date,
+         OLD.location,
+         'update',
+         NOW(),
+         CURRENT_USER()); -- 현재 작성한 사람
+END $$
+DELIMITER ;
+# staff 테이블에 랜치 아이콘을 눌러 메뉴 중 Trigger에 들어가면 트리거가 생성된 것을 확인할 수 있다.
+
+# UPDATE
+UPDATE staff
+SET first_name = 'lim'
+WHERE staff_id = 55;
+
+SELECT * FROM backup_staff;
+
+# after Delete trigger 생성
+DELIMITER $$
+CREATE TRIGGER backup_staff_delete
+    AFTER DELETE
+    ON staff
+    FOR EACH ROW
+BEGIN
+    INSERT INTO backup_staff VALUES (
+        OLD.staff_id,
+        OLD.first_name,
+        OLD.last_name,
+        OLD.position,
+        OLD.start_date,
+        OLD.location,
+        'delete',
+        CURDATE(),
+        CURRENT_USER() );
+END $$
+DELIMITER ;
+
+use coffee;
+DELETE FROM staff WHERE staff_id = 55;
+SELECT * FROM staff WHERE staff_id = 55;
+SELECT * FROM backup_staff WHERE staff_id = 55; -- mod_type이 delete인것 확인(위에서 delete 했음)
+
+# trigger 삭제 
+DROP TRIGGER IF EXISTS staff_AFTER_INSERT;
+DROP TRIGGER delete_backup_staff;
+
+
