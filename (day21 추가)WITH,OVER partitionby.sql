@@ -137,5 +137,26 @@ HAVING transaction_date='2019-04-01';
 # 테이블을 다 가져와서 조합해서 보여줌
 # group by와 다르게 그 column 을 select 하지 않아도 partition 나눠서 볼 수 있다. 
 
+### WITH
+-- : 참조할 임시테이블을 만들어서 활용할 수 있도록 하는 구문
+-- Subquery 사용
+-- VIEW와 유사하나, Query문안에서만 활용 가능(단발성 임시테이블)
+-- -> 따로 저장해 놓는게 아니라 코드 안에서!
+
+use world;
+WITH gnp_ranking AS(
+SELECT 
+    Name, Continent, GNP, 
+    RANK() OVER (PARTITION BY Continent ORDER BY GNP DESC) AS gnp_rank
+FROM country
+WHERE GNP IS NOT NULL -- AND gnp_rank =< 3 -- where 이 select 보다 실행 순서상 앞에 있으므로 실행되지 않음 
+ORDER BY Continent, gnp_rank)
+
+-- 3위까지 보여주기 위해 with사용해 조회 
+SELECT 
+	Name, Continent, GNP
+FROM gnp_ranking
+WHERE gnp_rank <= 3 and Continent = 'Asia';
+
 
 
